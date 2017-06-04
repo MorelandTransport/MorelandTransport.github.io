@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <head>
   <title>Leaflet testing one two three </title>
+
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
     integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
       integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
       crossorigin=""></script>
+
+      <script src='https://api.mapbox.com/mapbox-gl-js/v0.36.0/mapbox-gl.js'></script>
+      <link href='https://api.mapbox.com/mapbox-gl-js/v0.36.0/mapbox-gl.css' rel='stylesheet' />
 <style>
   #map { height: 500px; }
 </style>
@@ -23,8 +32,19 @@
 
 <script>
 
-  var map = L.map('map').setView([-37.8136, 144.9631], 13);
-  var marker = L.marker([-37.8136, 144.9631]).addTo(map);
+  var map = L.map('map').setView([-37.75, 144.96667], 13);
+  var marker = L.marker([-37.7667, 144.9628]).addTo(map);
+  var json_file = "json/count_location_details.json";
+
+  $.ajax({
+    url: json_file,
+    dataType: 'json',
+    success: function (data) {
+        console.log()
+        var layer = L.geoJSON(data).addTo(map);
+        map.fitBounds(layer.getBounds());
+    }
+});
 
   L.tileLayer(
         'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
