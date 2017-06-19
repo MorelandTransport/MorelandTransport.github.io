@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Leaflet testing one two three </title>
+  <title>Moreland Council Morning Peak (7-9am) bicycle counts 2010 to 2017 </title>
 
   <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -18,6 +18,11 @@
       <link href='https://api.mapbox.com/mapbox-gl-js/v0.36.0/mapbox-gl.css' rel='stylesheet' />
 <style>
   #map { height: 500px; }
+
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
 </style>
 
 </head>
@@ -27,13 +32,18 @@
 <body>
 
 
-  <H1>Hello world</H1>
+  <H1>Moreland Council Morning Peak (7-9am) bicycle counts 2010 to 2017</H1>
+  <p>Map depicts results of the 7am to 9am intersection bicycle intercept surveys conducted between 2010 and 2017.
+  Survey conducted using human observers recording the turning movements of each bicycle user as they pass through an intersection.
+Surveys conducted on a mid-week Autumn work day following recommencement of both primary school and university terms (usually the second Tuesday in March).
+Approximately 100 sites are included in the survey.  In any given year approximately 30 sites are counted.
+  Count sites are rotated with the aim to count each site once every three years.</p>
   <div id="map"></div>
 
 <script>
 
   var map = L.map('map').setView([-37.75, 144.96667], 13);
-  var json_file = "json/count_location_details_grow.json";
+  var json_file = "json/count_location_details.json";
 
 
   $.ajax({
@@ -43,13 +53,38 @@
         console.log()
         var layer = L.geoJSON(data, {
           onEachFeature: function(feature, layer){
-            layer.bindPopup(feature.properties.countsite + "<BR>" +
+            layer.bindPopup(
+              feature.properties.countsite + "<BR>" +
               "Distance from CBD: " + feature.properties.dist_from_cbd + " km" + "<BR>"  +
               "Most recent count year: " + feature.properties.Most_recent_count_year + "<BR>" +
               "Most recent count value: " + feature.properties.Most_recent_count_value + "<BR>" +
               "Additional riders each year: " + feature.properties.Annual_increase + "<BR>" +
               "Growth rate: " + feature.properties.Growth_rate + "%" + "<BR>" +
-              "Number of times counted: " + feature.properties.Number_of_times_counted);
+              "Number of times counted: " + feature.properties.Number_of_times_counted +"<BR>" +
+              "<table style='width:100%'>" +
+               "<tr>" +
+                "<th>2010</th>" +
+                "<th>2011</th>" +
+                "<th>2012</th>" +
+                "<th>2013</th>" +
+                "<th>2014</th>" +
+                "<th>2015</th>" +
+                "<th>2016</th>" +
+                "<th>2017</th>" +
+               "</tr>" +
+
+               "<tr>" +
+                "<td>" + feature.properties['2010'] + "</td>" +
+                "<td>" + feature.properties['2011'] + "</td>" +
+                "<td>" + feature.properties['2012'] + "</td>" +
+                "<td>" + feature.properties['2013'] + "</td>" +
+                "<td>" + feature.properties['2014'] + "</td>" +
+                "<td>" + feature.properties['2015'] + "</td>" +
+                "<td>" + feature.properties['2016'] + "</td>" +
+                "<td>" + feature.properties['2017'] + "</td>" +
+               "</tr>" +
+              "</table>"
+                );
           },
         }).addTo(map);
 
@@ -73,5 +108,10 @@
 
 
 </script>
+
+<p>Growth rates (where provided), are calculated using a 'gradient of trend line' method.  This requires a site be counted at least three times before a reliable trend line can be calculated.</p>
+Copies of the original Microsoft Excel spreadsheet data source, and the python code to create the data are available from
+the <A HREF='https://github.com/MorelandTransport/SuperTueDataCleaner'>Moreland Transport GitHub page</A>. </p>
+
 </body>
 </html>
